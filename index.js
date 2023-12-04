@@ -23,7 +23,7 @@ async function runExample() {
      x[16] = document.getElementById('box17').value;
      x[17] = document.getElementById('box18').value;
 
-    let tensorX = new ort.Tensor('float32', x, [1, 18] );
+    let tensorX = new ort.Tensor('float64', x, [1, 18] );
     let feeds = {float_input: tensorX};
 
     let session = await ort.InferenceSession.create('xgboost_house_ort.onnx');
