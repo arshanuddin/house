@@ -1,141 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title>Best House Prediction XGBoost</title>
 
-  
-<meta
- 
-charset="UTF-8">
-
-  
-<meta
- 
-name="viewport"
- 
-content="width=device-width, initial-scale=1.0">
-
-  
-<style>
-
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+  	<script src="./index.js"></script>
     
-body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
+   	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+  <title>Your Professional Website</title>
+  
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
     }
 
-    h1 {
+    header {
       text-align: center;
-      font-size: 24px;
-      margin-top: 20px;
       margin-bottom: 20px;
     }
 
-    .container {
-      width: 80%;
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-    }
-
-    .inputs {
+    form {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
     }
 
-    .input-group {
-      display: flex;
-      flex-direction: column;
+    label {
+      width: 48%;
       margin-bottom: 10px;
     }
 
-    .input-label {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .input-field {
+    input {
       width: 100%;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      padding: 8px;
+      box-sizing: border-box;
     }
 
-    .button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4caf50;
+      color: #fff;
       border: none;
-      border-radius: 5px;
       cursor: pointer;
     }
 
-    .predictions {
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #predictions {
       margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4caf50;
+      color: white;
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Best House Prediction XGBoost</h1>
 
-    <div class="inputs">
-      <div class="input-group">
-        <label class="input-label">x1</label>
-        <input type="text" class="input-field" id="box1" value="0">
-      </div>
+  <header>
+    <h1>House Prediction Using XGboost </h1>
+  </header>
 
-      <div class="input-group">
-        <label class="input-label">x2</label>
-        <input type="text" class="input-field" id="box2" value="0">
-      </div>
+  <form>
+    <!-- Update IDs and labels accordingly -->
+    <label for="box1">Price:</label>
+    <input type="text" value="0" id="box1">
+    
+    <label for="box2">Bedrooms:</label>
+    <input type="text" value="0" id="box2">
+    
+    <label for="box3">Bathroom:</label>
+    <input type="text" value="0" id="box3">
+    
+     <label for="box4">Sqft Living:</label>
+    <input type="text" value="0" id="box4">
+    
+     <label for="box5">Sqft Lot:</label>
+    <input type="text" value="0" id="box5">
+    
+     <label for="box6">No of Floors:</label>
+    <input type="text" value="0" id="box6">
+    
+     <label for="box7">Waterfront:</label>
+    <input type="text" value="0" id="box7">
+    
+    <label for="box8">View:</label>
+    <input type="text" value="0" id="box8">
+    
+    <label for="box9">Condition of the house:</label>
+    <input type="text" value="0" id="box9">
+    
+    <label for="box10">House Grade:</label>
+    <input type="text" value="0" id="box10">
+    
+    <label for="box11">Sqft Above:</label>
+    <input type="text" value="0" id="box11">
+    
+    <label for="box12">Sqft Basement:</label>
+    <input type="text" value="0" id="box12">
+    
+    <label for="box13">Year Built:</label>
+    <input type="text" value="0" id="box13">
+    
+    <label for="box14">Year Renovated:</label>
+    <input type="text" value="0" id="box14">
+    
+    <label for="box15">Area Zipcode:</label>
+    <input type="text" value="0" id="box15">
+    
+    <label for="box16">Latitude:</label>
+    <input type="text" value="0" id="box16">
+    
+    <label for="box17">Longitude:</label>
+    <input type="text" value="0" id="box17">
+    
+    <label for="box18">Sqft Living 15:</label>
+    <input type="text" value="0" id="box18">
+    
+    <label for="box19">Sqft Lot 15:</label>
+    <input type="text" value="0" id="box19">
+    
+     
+    <button type="button" onclick="runExample()">Run Example</button>
+  </form>
 
-      <div class="input-group">
-        <label class="input-label">x3</label>
-        <input type="text" class="input-field" id="box3" value="0">
-      </div>
-    </div>
+  <div id="predictions"></div>
 
-    <div class="inputs">
-      <div class="input-group">
-        <label class="input-label">x4</label>
-        <input type="text" class="input-field" id="box4" value="0">
-      </div>
 
-      <div class="input-group">
-        <label class="input-label">x5</label>
-        <input type="text" class="input-field" id="box5" value="0">
-      </div>
+</body>
 
-      <div class="input-group">
-        <label class="input-label">x6</label>
-        <input type="text" class="input-field" id="box6" value="0">
-      </div>
-    </div>
-
-    <div class="inputs">
-      <div class="input-group">
-        <label class="input-label">x7</label>
-        <input type="text" class="input-field" id="box7" value="0">
-      </div>
-
-      <div class="input-group">
-        <label class="input-label">x8</label>
-        <input type="text" class="input-field" id="box8" value="0">
-      </div>
-
-      <div class="input-group">
-        <label class="input-label">x9</label>
-        <input type="text" class="input-field" id="box9" value="0">
-      </div>
-    </div>
-
-    <div class="inputs">
-      <div class="input-group">
-        <label class="input-label">
-
-          
-        }
+</html>
